@@ -9,7 +9,7 @@ categories:
 - Java
 ---
 ## 需求 ##
-* 一个JSON数组，每个JSON对象都有一个key为id  
+* 一个JSON数组，每个JSON对象都有一个key为id
     
 ```json
 [    
@@ -53,7 +53,7 @@ categories:
 ]          
 ```    
 
-* 一个JavaBean列表，每个对象都有属性id和属性name  
+* 一个JavaBean列表，每个对象都有属性id和属性name
 
 ```java
 public class AdTemplateDO {
@@ -103,7 +103,8 @@ public List<Map<String, String>> getTemplateByOrderItemId(Integer orderItemId) {
 ## Stream解决方案 ##
 
 原本需要返回的数据格式是`List<Map<String, String>>`，即`map.put("id", id); map.put("name", name)`。在Java8具体操作时，遇到了点问题。  
-```java
+
+```java  
 public List<Map<String, String>> getTemplateByOrderItemId(Integer orderItemId) {
     String slotJsonStr = this.getSlotJsonByOrderItemId(orderItemId);
     JSONArray slotJson = JSONArray.fromObject(slotJsonStr);
