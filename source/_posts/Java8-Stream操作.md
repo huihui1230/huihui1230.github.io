@@ -14,7 +14,7 @@ description: 一个JSON数组，每个JSON对象都有一个key为id；一个Jav
 * 一个JavaBean列表，每个对象都有属性id和属性name  
 * 得到JSON数组中的每个id和id对应的name 
     
-```json
+```
 [    
     {    
         "material1": {
@@ -54,9 +54,7 @@ description: 一个JSON数组，每个JSON对象都有一个key为id；一个Jav
         "id": "18"
     }
 ]          
-```    
 
-```java
 public class AdTemplateDO {
     private Integer id;
 
