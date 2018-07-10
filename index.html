@@ -285,222 +285,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://huihui1230.github.io/2018/07/09/yuanwendan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="huihui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="huihui">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/09/yuanwendan/" itemprop="url">Java8 Stream操作</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-09T18:01:50+08:00">
-                2018-07-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/" itemprop="url" rel="index">
-                    <span itemprop="name">后端</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/09/yuanwendan/" class="leancloud_visitors" data-flag-title="Java8 Stream操作">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">热度&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-				 <span>℃</span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
-<li>一个JSON数组，每个JSON对象都有一个key为id  </li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"material1"</span>: &#123;</span><br><span class="line">            <span class="string">"label"</span>: <span class="string">"素材一"</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"file"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"materialPath1"</span>: &#123;</span><br><span class="line">            <span class="string">"label"</span>: <span class="string">"素材一路径"</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"text"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"id"</span>: <span class="string">"3"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"titlexi"</span>: &#123;</span><br><span class="line">            <span class="string">"label"</span>: <span class="string">"标题"</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">            <span class="string">"regExp"</span>: <span class="string">""</span>,     </span><br><span class="line">            <span class="string">"placeholder"</span>: <span class="string">"请输入一个标题"</span>,   </span><br><span class="line">            <span class="string">"de-value"</span>: <span class="string">"默认标题"</span>,   </span><br><span class="line">            <span class="string">"readonly"</span>: <span class="string">"true"</span>     </span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"select"</span>: &#123;</span><br><span class="line">            <span class="string">"label"</span>: <span class="string">"类型"</span>,</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"select"</span>,</span><br><span class="line">            <span class="string">"value"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">"key"</span>: <span class="string">"11519"</span>,</span><br><span class="line">                    <span class="string">"value"</span>: <span class="string">"11519"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">"key"</span>: <span class="string">"1"</span>,</span><br><span class="line">                    <span class="string">"value"</span>: <span class="string">"一"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="string">"de-value"</span>: <span class="string">"1"</span>    </span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"id"</span>: <span class="string">"18"</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"><span class="string">``</span><span class="string">`    </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">* 一个JavaBean列表，每个对象都有属性id和属性name  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>Java</span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">AdTemplateDO</span> </span>&#123;</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    private <span class="built_in">String</span> templateName;</span><br><span class="line"></span><br><span class="line">    private Byte deleted;</span><br><span class="line"></span><br><span class="line">    private <span class="built_in">Date</span> gmtCreate;</span><br><span class="line"></span><br><span class="line">    private <span class="built_in">Date</span> gmtModified;</span><br><span class="line"></span><br><span class="line">    private <span class="built_in">String</span> templateJson;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`    </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">* 得到JSON数组中的每个id和id对应的name  </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">## for循环解决方案  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>Java</span><br><span class="line">public List&lt;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) &#123;</span><br><span class="line">    <span class="built_in">String</span> slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);</span><br><span class="line">    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);</span><br><span class="line">    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();</span><br><span class="line">    List&lt;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">Object</span> templateObject : slotJson) &#123;</span><br><span class="line">        JSONObject templateJson = (JSONObject) templateObject;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (AdTemplateDO adtemplateDO : adTemplateDOList) &#123;</span><br><span class="line">			<span class="keyword">if</span> (templateJson.get(<span class="string">"id"</span>).toString().equals(adTemplateDO.getId().toString())) &#123;</span><br><span class="line">				<span class="built_in">Map</span>&lt;Integer, <span class="built_in">String</span>&gt; templateMap = <span class="keyword">new</span> HashedMap();</span><br><span class="line">				templateMap.put(<span class="string">"id"</span>, adTemplateDO.getId());</span><br><span class="line">				templateMap.put(<span class="string">"name"</span>, adTemplateDO.getName());</span><br><span class="line">				templateMapList.add(templateMap);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> templateMapList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Stream解决方案"><a href="#Stream解决方案" class="headerlink" title="Stream解决方案"></a>Stream解决方案</h2><p>原本需要返回的数据格式是<code>List&lt;Map&lt;String, String&gt;&gt;</code>，即<code>map.put(&quot;id&quot;, id); map.put(&quot;name&quot;, name)</code>。在Java8具体操作时，遇到了点问题。  </p>
-<pre><code class="Java"><span class="keyword">public</span> List&lt;Map&lt;String, String&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) {
-    String slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);
-    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);
-    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();
-    List&lt;Map&lt;String, String&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();
-
-    <span class="keyword">for</span> (Object templateObject : slotJson) {
-            JSONObject templateJson = (JSONObject) templateObject;
-            Map&lt;Integer, String&gt; templateMap = <span class="keyword">new</span> HashedMap();
-
-            <span class="comment">//找到对应模板，将id和name放入templateMap中</span>
-            adTemplateDOList.stream().filter(adTemplateDO -&gt; adTemplateDO.getId().toString().equals(templateJson.get(<span class="string">"id"</span>).toString())).findFirst()
-                    .map(template -&gt; templateMap.put(<span class="string">"id"</span>, template.getId()));
-            <span class="comment">//.map(template -&gt; templateMap.put("id", template.getId())).map(template -&gt; templateMap.put("name", template.getTemplateName()))</span>
-
-            templateMapList.add(templateMap);
-        }
-
-    <span class="keyword">return</span> templateMapList;
-}  
-</code></pre>
-<p>第一次map之后返回的流是整型值，第二次得到的流不再是template对象的流，无法获取name。  </p>
-<p>只好将返回的数据格式改为<code>List&lt;Map&lt;Integer, String&gt;&gt;</code>，即<code>map.put(id, name)</code>。    </p>
-<pre><code class="Java"><span class="keyword">public</span> List&lt;Map&lt;Integer, String&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) {
-    String slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);
-    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);
-    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();
-    List&lt;Map&lt;Integer, String&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();
-
-    <span class="keyword">for</span> (Object templateObject : slotJson) {
-        JSONObject templateJson = (JSONObject) templateObject;
-        Map&lt;Integer, String&gt; templateMap = <span class="keyword">new</span> HashedMap();
-
-        <span class="comment">//找到对应模板，将id和name放入templateMap中</span>
-        adTemplateDOList.stream().filter(adTemplateDO -&gt; adTemplateDO.getId().toString().equals(templateJson.get(<span class="string">"id"</span>).toString())).findFirst()
-                .map(template -&gt; templateMap.put(template.getId(), template.getTemplateName()));
-
-        templateMapList.add(templateMap);
-    }
-
-    <span class="keyword">return</span> templateMapList;
-}    
-</code></pre>
-
-          
-        
-      
-    </div>
-    
-    
-    
-	
-	<div>
-	
-	</div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://huihui1230.github.io/2018/07/09/Java8-Stream操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -616,61 +400,14 @@
 
       
         
-          
-            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
-<li>一个JSON数组，每个JSON对象都有一个key为id</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">[    </span><br><span class="line">    &#123;    </span><br><span class="line">        <span class="attr">"material1"</span>: &#123;</span><br><span class="line">            <span class="attr">"label"</span>: <span class="string">"素材一"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"file"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"materialPath1"</span>: &#123;</span><br><span class="line">            <span class="attr">"label"</span>: <span class="string">"素材一路径"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="string">"3"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">"titlexi"</span>: &#123;</span><br><span class="line">            <span class="attr">"label"</span>: <span class="string">"标题"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">            <span class="attr">"regExp"</span>: <span class="string">""</span>,     </span><br><span class="line">            <span class="attr">"placeholder"</span>: <span class="string">"请输入一个标题"</span>,   </span><br><span class="line">            <span class="attr">"de-value"</span>: <span class="string">"默认标题"</span>,   </span><br><span class="line">            <span class="attr">"readonly"</span>: <span class="string">"true"</span>     </span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"select"</span>: &#123;</span><br><span class="line">            <span class="attr">"label"</span>: <span class="string">"类型"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"select"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"key"</span>: <span class="string">"11519"</span>,</span><br><span class="line">                    <span class="attr">"value"</span>: <span class="string">"11519"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"key"</span>: <span class="string">"1"</span>,</span><br><span class="line">                    <span class="attr">"value"</span>: <span class="string">"一"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"de-value"</span>: <span class="string">"1"</span>    </span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="string">"18"</span></span><br><span class="line">    &#125;</span><br><span class="line">]          </span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">* 一个JavaBean列表，每个对象都有属性id和属性name</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">public class AdTemplateDO &#123;</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    private String templateName;</span><br><span class="line"></span><br><span class="line">    private Byte deleted;</span><br><span class="line"></span><br><span class="line">    private Date gmtCreate;</span><br><span class="line"></span><br><span class="line">    private Date gmtModified;</span><br><span class="line"></span><br><span class="line">    private String templateJson;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>得到JSON数组中的每个id和id对应的name  </li>
-</ul>
-<h2 id="for循环解决方案"><a href="#for循环解决方案" class="headerlink" title="for循环解决方案"></a>for循环解决方案</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Map&lt;String, String&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) &#123;</span><br><span class="line">    String slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);</span><br><span class="line">    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);</span><br><span class="line">    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();</span><br><span class="line">    List&lt;Map&lt;String, String&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Object templateObject : slotJson) &#123;</span><br><span class="line">        JSONObject templateJson = (JSONObject) templateObject;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (AdTemplateDO adtemplateDO : adTemplateDOList) &#123;</span><br><span class="line">			<span class="keyword">if</span> (templateJson.get(<span class="string">"id"</span>).toString().equals(adTemplateDO.getId().toString())) &#123;</span><br><span class="line">				Map&lt;Integer, String&gt; templateMap = <span class="keyword">new</span> HashedMap();</span><br><span class="line">				templateMap.put(<span class="string">"id"</span>, adTemplateDO.getId());</span><br><span class="line">				templateMap.put(<span class="string">"name"</span>, adTemplateDO.getName());</span><br><span class="line">				templateMapList.add(templateMap);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> templateMapList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Stream解决方案"><a href="#Stream解决方案" class="headerlink" title="Stream解决方案"></a>Stream解决方案</h2><p>原本需要返回的数据格式是<code>List&lt;Map&lt;String, String&gt;&gt;</code>，即<code>map.put(&quot;id&quot;, id); map.put(&quot;name&quot;, name)</code>。在Java8具体操作时，遇到了点问题。  </p>
-<pre><code class="java"><span class="keyword">public</span> List&lt;Map&lt;String, String&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) {
-    String slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);
-    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);
-    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();
-    List&lt;Map&lt;String, String&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();
-
-    <span class="keyword">for</span> (Object templateObject : slotJson) {
-            JSONObject templateJson = (JSONObject) templateObject;
-            Map&lt;Integer, String&gt; templateMap = <span class="keyword">new</span> HashedMap();
-
-            <span class="comment">//找到对应模板，将id和name放入templateMap中</span>
-            adTemplateDOList.stream().filter(adTemplateDO -&gt; adTemplateDO.getId().toString().equals(templateJson.get(<span class="string">"id"</span>).toString())).findFirst()
-                    .map(template -&gt; templateMap.put(<span class="string">"id"</span>, template.getId()));
-            <span class="comment">//.map(template -&gt; templateMap.put("id", template.getId())).map(template -&gt; templateMap.put("name", template.getTemplateName()))</span>
-
-            templateMapList.add(templateMap);
-        }
-
-    <span class="keyword">return</span> templateMapList;
-}  
-</code></pre>
-<p>第一次map之后返回的流是整型值，第二次得到的流不再是template对象的流，无法获取name。  </p>
-<p>只好将返回的数据格式改为<code>List&lt;Map&lt;Integer, String&gt;&gt;</code>，即<code>map.put(id, name)</code>。    </p>
-<pre><code class="java"><span class="keyword">public</span> List&lt;Map&lt;Integer, String&gt;&gt; getTemplateByOrderItemId(Integer orderItemId) {
-    String slotJsonStr = <span class="keyword">this</span>.getSlotJsonByOrderItemId(orderItemId);
-    JSONArray slotJson = JSONArray.fromObject(slotJsonStr);
-    List&lt;AdTemplateDO&gt; adTemplateDOList = adTemplateService.selectDOList();
-    List&lt;Map&lt;Integer, String&gt;&gt; templateMapList = <span class="keyword">new</span> ArrayList&lt;&gt;();
-
-    <span class="keyword">for</span> (Object templateObject : slotJson) {
-        JSONObject templateJson = (JSONObject) templateObject;
-        Map&lt;Integer, String&gt; templateMap = <span class="keyword">new</span> HashedMap();
-
-        <span class="comment">//找到对应模板，将id和name放入templateMap中</span>
-        adTemplateDOList.stream().filter(adTemplateDO -&gt; adTemplateDO.getId().toString().equals(templateJson.get(<span class="string">"id"</span>).toString())).findFirst()
-                .map(template -&gt; templateMap.put(template.getId(), template.getTemplateName()));
-
-        templateMapList.add(templateMap);
-    }
-
-    <span class="keyword">return</span> templateMapList;
-}    
-</code></pre>
-
-          
+          一个JSON数组，每个JSON对象都有一个key为id；一个JavaBean列表，每个对象都有属性id和属性name；  得到JSON数组中的每个id和id对应的name。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/09/Java8-Stream操作/">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -836,7 +573,7 @@
 
       
         
-          使用ajaxfileupload.js上传文件
+          使用ajaxfileupload.js异步上传文件。
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/07/06/文件异步上传（不需要提交表单）/">
@@ -927,7 +664,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
