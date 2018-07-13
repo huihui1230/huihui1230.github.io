@@ -261,7 +261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/10/Spring装配Bean/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/07/10/Spring装配Bean/" itemprop="url">Spring装配Bean</a></h1>
         
 
         <div class="post-meta">
@@ -284,6 +284,39 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -291,7 +324,7 @@
 
           
           
-             <span id="/2018/07/10/Spring装配Bean/" class="leancloud_visitors" data-flag-title="">
+             <span id="/2018/07/10/Spring装配Bean/" class="leancloud_visitors" data-flag-title="Spring装配Bean">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,71 +357,19 @@
 
       
         
-          
-            <hr>
-<p>title: Spring装配Bean<br>date: 2018-07-10 19:40:26<br>tags: Spring<br>categories：</p>
-<ul>
-<li>后端</li>
-<li>Spring</li>
-</ul>
-<hr>
-<h2 id="自动化装配bean"><a href="#自动化装配bean" class="headerlink" title="自动化装配bean"></a>自动化装配bean</h2><ul>
-<li>@Component、@ComponentScan和@Autowired    </li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> soundsystem;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CompactDisc</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>;  </span><br><span class="line">&#125;  </span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line">```java  </span><br><span class="line"><span class="keyword">package</span> soundsystem;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Component</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SgtPeppers</span> <span class="keyword">implements</span> <span class="title">CompactDisc</span> </span>&#123;  </span><br><span class="line">  </span><br><span class="line">	<span class="keyword">private</span> String title = <span class="string">"title"</span>;  </span><br><span class="line">    <span class="keyword">private</span> String artist = <span class="string">"artist"</span>;   </span><br><span class="line">  </span><br><span class="line">	<span class="meta">@Override</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">"Playing "</span> + title + <span class="string">" by "</span> + artist);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Component</span>表明类CompactDisc是一个组件类，默认ID为sgtPeppers。也可以指定bean的ID，`<span class="meta">@Component</span>(<span class="string">"LonelyHeartsClub"</span>)`将ID指定为lonelyHeartsClub。<span class="meta">@Named</span>也可以来设置bean的ID，`<span class="meta">@Named</span>(<span class="string">"lonelyHeartsClub"</span>)`，两者差别不大。</span><br><span class="line">  </span><br><span class="line">```  </span><br><span class="line"><span class="keyword">package</span> soundsystem;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;  </span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span>  </span><br><span class="line"><span class="meta">@ComponentScan</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerConfig</span> </span>&#123;  </span><br><span class="line">  </span><br><span class="line">&#125;  </span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@ComponentScan</span>启用组件扫描，默认扫描与配置类相同的包。可以通过设置<span class="meta">@ComponentScan</span>的value值来设置组件扫描的包，`<span class="meta">@ComponentScan</span>(<span class="string">"soundsystem"</span>)`。可以设置多个包，`ComponentScan(basePackages=&#123;<span class="string">"soundsystem"</span>, <span class="string">"package1"</span>&#125;)`。也可以设置扫描的类，`ComponentScan(basePackageClasses=&#123;CDPlayer.class, DVDPlayer.class&#125;)`  </span><br><span class="line">  </span><br><span class="line">测试，引入Spring和Junit的jar包  。</span><br><span class="line">  </span><br><span class="line">![](https:<span class="comment">//i.imgur.com/6GNBpjZ.png)  </span></span><br><span class="line">![](https:<span class="comment">//i.imgur.com/SdUkQXL.png)  </span></span><br><span class="line">  </span><br><span class="line">运行提示找不到hamcrest包，降低Junit版本或者加入hamcrest包，由于降低Junit版本之后和spring适配有问题，只好加入hamrest包了。  </span><br><span class="line">  </span><br><span class="line">![](https:<span class="comment">//i.imgur.com/vArScZC.png)</span></span><br><span class="line">  </span><br><span class="line">```  </span><br><span class="line"><span class="keyword">package</span> soundsystem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.Assert;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</span><br><span class="line"><span class="meta">@ContextConfiguration</span>(classes = CDPlayerConfig.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CDPlayerTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> CompactDisc compactDisc;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cdShouldNotBeNull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Assert.assertNotNull(compactDisc);</span><br><span class="line">        compactDisc.play();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;  </span><br><span class="line">```    </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Autowired</span>可以将扫描到的bean装配到注解的地方，可以在类中的属性上注解，也可以在方法上注解。<span class="meta">@Autowired</span>的required属性默认为<span class="keyword">true</span>，当没有bean时，会报错。将required属性设置为<span class="keyword">false</span>，`<span class="meta">@Autowired</span>(required=<span class="keyword">false</span>)`，当没有匹配的bean，这个bean就会处于未装配状态，不会报错。<span class="meta">@Inject</span>和<span class="meta">@Autowired</span>作用类似。  </span><br><span class="line">  </span><br><span class="line">```  </span><br><span class="line"><span class="keyword">private</span> CompactDisc compactDisc;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompactDisc</span><span class="params">(CompactDisc compactDisc)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.compactDisc = compactDisc;</span><br><span class="line">&#125;  </span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line">* JavaConfig  </span><br><span class="line">  </span><br><span class="line">要装配的类：</span><br></pre></td></tr></table></figure>
-<p>package soundsystem;</p>
-<p>public class SgtPeppers {</p>
-<pre><code>private String title = &quot;title&quot;;
-private String artist = &quot;artist&quot;;
+          <h2 id="自动化装配bean（-Component、-ComponentScan和-Autowired"><a href="#自动化装配bean（-Component、-ComponentScan和-Autowired" class="headerlink" title="自动化装配bean（@Component、@ComponentScan和@Autowired)"></a>自动化装配bean（@Component、@ComponentScan和@Autowired)</h2><pre><code>package soundsystem;  
 
-
-@Override
-public void play() {
-    System.out.println(&quot;Playing &quot; + title + &quot; by &quot; + artist);
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">```  </span><br><span class="line">package soundsystem;</span><br><span class="line"></span><br><span class="line">public class CDPlayer &#123;</span><br><span class="line"></span><br><span class="line">    private CompactDisc compactDisc;</span><br><span class="line"></span><br><span class="line">    public CDPlayer(CompactDisc compactDisc) &#123;</span><br><span class="line">        this.compactDisc = compactDisc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void play() &#123;</span><br><span class="line">        compactDisc.play();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>配置类：</p>
-<pre><code>package soundsystem;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class CDPlayerConfig {
-    @Bean
-    public CompactDisc sgtPeppers() {
-        return new SgtPeppers();
-    }
-
-    @Bean
-    public CDPlayer cdPlayer() {
-        return new CDPlayer(sgtPeppers());
-    }
+public interface CompactDisc {  
+    void play();  
 }  
-</code></pre><p>测试类：  </p>
-<pre><code>package soundsystem;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = CDPlayerConfig.class)
-public class CDPlayerTest {
-
-    @Autowired
-    private CDPlayer cdPlayer;
-
-    @Test
-    public void cdShouldNotBeNull() {
-        cdPlayer.play();
-    }
-}  
-</code></pre><p>@Bean装配bean，配置类中，也可以用如下方式进行装配。在装配CDPlayer过程中，可以由sgtPeppers()或CompactDisc compactDisc找到装配的CompactDisc的bean，并注入到cdPlayer()方法中。</p>
-
-          
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/10/Spring装配Bean/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -829,7 +810,7 @@ public class CDPlayerTest {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -840,7 +821,7 @@ public class CDPlayerTest {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
