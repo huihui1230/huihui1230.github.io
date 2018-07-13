@@ -7,12 +7,13 @@ tags:
 categories:
 - 后端  
 - Java
-description: 一个JSON数组，每个JSON对象都有一个key为id；一个JavaBean列表，每个对象都有属性id和属性name；  得到JSON数组中的每个id和id对应的name。
 ---
 ## 需求 ##
 * 一个JSON数组，每个JSON对象都有一个key为id  
 * 一个JavaBean列表，每个对象都有属性id和属性name  
-* 得到JSON数组中的每个id和id对应的name 
+* 得到JSON数组中的每个id和id对应的name   
+  
+<!--more-->
     
 ```
 [    

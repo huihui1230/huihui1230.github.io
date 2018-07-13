@@ -381,6 +381,130 @@ p-命名空间也可以注入普通属性：
 	</beans>
   
 ## 导入和混合配置 ##  
+    
+* 在JavaConfig中引用JavaConfig配置  
   
+	package soundsystem;
+	
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	
+	import java.util.ArrayList;
+	import java.util.List;
+
+	@Configuration
+	public class SgtConfig {
+	    @Bean
+	    public CompactDisc sgtPeppers() {
+	        List<String> tracks = new ArrayList<>();
+	        tracks.add("s1");
+	        tracks.add("s2");
+	        tracks.add("s3");
+	
+	        return new SgtPeppers("title", "artist", tracks);
+	    }
+	}  
+
+&emsp;  
   
+	package soundsystem;
+	
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.Import;
+
+	@Configuration
+	@Import(SgtConfig.class)
+	public class CDPlayerConfig {
+	
+	    @Bean
+	    public CDPlayer cdPlayer(CompactDisc compactDisc) {
+	        return new CDPlayer(compactDisc);
+	    }
+	}
+
+
+* 在JavaConfig中引用XML配置  
+    
+SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig中引用xml的装配。  
   
+	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
+        <constructor-arg>
+            <list>
+                <value>s1</value>
+                <value>s2</value>
+                <value>s3</value>
+            </list>
+        </constructor-arg>
+    </bean>
+  
+&emsp;  
+  
+	package soundsystem;
+	
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.ImportResource;
+
+	@Configuration
+	@ImportResource("/soundsystem/bean.xml")
+	public class CDPlayerConfig {
+	
+	    @Bean
+	    public CDPlayer cdPlayer(CompactDisc compactDisc) {
+	        return new CDPlayer(compactDisc);
+	    }
+	}  
+  
+* 在XML配置中引用JavaConfig  
+  
+SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引用SgtConfig的装配。  
+  
+	package soundsystem;
+	
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	
+	import java.util.ArrayList;
+	import java.util.List;
+
+	@Configuration
+	public class SgtConfig {
+	    @Bean
+	    public CompactDisc sgtPeppers() {
+	        List<String> tracks = new ArrayList<>();
+	        tracks.add("s1");
+	        tracks.add("s2");
+	        tracks.add("s3");
+	
+	        return new SgtPeppers("title", "artist", tracks);
+	    }
+	}  
+  
+&emsp;  
+  
+	<bean class="soundsystem.SgtConfig"></bean>
+
+    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>  
+  
+* 在XML配置中引用XML  
+  
+sgt-bean.xml  
+  
+	<bean id="sgtPeppers" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
+        <constructor-arg>
+            <list>
+                <value>s1</value>
+                <value>s2</value>
+                <value>s3</value>
+            </list>
+        </constructor-arg>
+    </bean>  
+  
+cdPlayer-bean.xml  
+  
+	<import resource="sgt-bean.xml"></import>
+
+    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>  
+  
+
