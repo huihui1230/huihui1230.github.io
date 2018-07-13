@@ -4,7 +4,8 @@ date: 2018-07-10 19:40:26
 tags: Spring
 categories:
 - 后端
-- Spring  
+- Spring
+copyright: true  
 ---
 ## 自动化装配bean（@Component、@ComponentScan和@Autowired) ## 
     
