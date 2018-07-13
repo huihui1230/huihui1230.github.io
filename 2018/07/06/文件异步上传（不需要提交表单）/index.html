@@ -73,18 +73,18 @@
 
 
 
-<meta name="description" content="使用ajaxfileupload.js异步上传文件。">
+<meta name="description" content="引入jsajaxfileupload.js">
 <meta name="keywords" content="JS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文件异步上传（不需要提交表单）">
 <meta property="og:url" content="https://huihui1230.github.io/2018/07/06/文件异步上传（不需要提交表单）/index.html">
 <meta property="og:site_name" content="huihui">
-<meta property="og:description" content="使用ajaxfileupload.js异步上传文件。">
+<meta property="og:description" content="引入jsajaxfileupload.js">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-10T02:07:47.890Z">
+<meta property="og:updated_time" content="2018-07-13T03:50:48.289Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文件异步上传（不需要提交表单）">
-<meta name="twitter:description" content="使用ajaxfileupload.js异步上传文件。">
+<meta name="twitter:description" content="引入jsajaxfileupload.js">
 
 
 
@@ -347,10 +347,6 @@
           
 
           
-              <div class="post-description">
-                  使用ajaxfileupload.js异步上传文件。
-              </div>
-          
 
         </div>
       </header>
@@ -365,7 +361,8 @@
       
 
       
-        <h2 id="引入js"><a href="#引入js" class="headerlink" title="引入js"></a>引入js</h2><p>ajaxfileupload.js </p>
+        <h2 id="引入js"><a href="#引入js" class="headerlink" title="引入js"></a>引入js</h2><p>ajaxfileupload.js   </p>
+<a id="more"></a>  
 <h2 id="异步上传文件"><a href="#异步上传文件" class="headerlink" title="异步上传文件"></a>异步上传文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;body&quot;).on(&quot;change&quot;, &quot;input[type=file]&quot;, function () &#123;</span><br><span class="line">    var fileElementId = $(this).attr(&quot;id&quot;);</span><br><span class="line">    var data = &#123;&quot;key&quot;: fileElementId&#125;;</span><br><span class="line"></span><br><span class="line">    $.ajaxFileUpload(&#123;</span><br><span class="line">        url: &apos;/ad/creative/upload&apos;,</span><br><span class="line">        secureuri: false,</span><br><span class="line">        data: data, //除了文件之外的其他数据</span><br><span class="line">        fileElementId: fileElementId, //input元素的id</span><br><span class="line">        dataType: &apos;json&apos;,</span><br><span class="line">        success: function (result) &#123;</span><br><span class="line">            if (result[&apos;status&apos;] == 1) &#123;</span><br><span class="line">                for (var key in result) &#123;</span><br><span class="line">                    if (key == &apos;status&apos; || key == &apos;msg&apos;) &#123;</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    $(&quot;#&quot; + key).val(result[key]);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                //预览、下载</span><br><span class="line">                $(&apos;#&apos; + fileElementId).parent().nextAll().remove();</span><br><span class="line">                $(&apos;#&apos; + fileElementId).parent().after(&apos;&lt;a target=&quot;_blank&quot; href=&quot;&apos; + result[fileElementId + &apos;Path&apos;] + &apos;&quot; title=&quot;预览&quot; xmlns=&quot;http://www.w3.org/1999/html&quot;&gt;&lt;div class=&quot;iconAdvertiser auditMediaAd&quot;&gt;&lt;/div&gt;&lt;/a&gt;&lt;a id=&quot;download&quot; href=&quot;javascript:void(0);&quot; title=&quot;下载&quot;&gt;&lt;div class=&quot;iconAdvertiser downloadAd&quot;&gt;&lt;/div&gt;&lt;/a&gt;&apos;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                tooltip(data[&apos;msg&apos;]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        error: function () &#123;</span><br><span class="line">            tooltip(&quot;生成模板失败！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
       

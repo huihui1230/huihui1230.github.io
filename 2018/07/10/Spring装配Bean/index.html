@@ -85,7 +85,7 @@
 <meta property="og:image" content="https://i.imgur.com/SdUkQXL.png">
 <meta property="og:image" content="https://i.imgur.com/vArScZC.png">
 <meta property="og:image" content="https://i.imgur.com/kqJi0Ra.png">
-<meta property="og:updated_time" content="2018-07-12T12:03:54.034Z">
+<meta property="og:updated_time" content="2018-07-13T03:22:42.572Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring装配Bean">
 <meta name="twitter:description" content="自动化装配bean（@Component、@ComponentScan和@Autowired)package soundsystem;    public interface CompactDisc {       void play();   }">
@@ -675,7 +675,115 @@ public class CDPlayer {
 
     &lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; p:compactDisc-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h2 id="导入和混合配置"><a href="#导入和混合配置" class="headerlink" title="导入和混合配置"></a>导入和混合配置</h2>
+</code></pre><h2 id="导入和混合配置"><a href="#导入和混合配置" class="headerlink" title="导入和混合配置"></a>导入和混合配置</h2><ul>
+<li><p>在JavaConfig中引用JavaConfig配置  </p>
+<p>  package soundsystem;</p>
+<p>  import org.springframework.context.annotation.Bean;<br>  import org.springframework.context.annotation.Configuration;</p>
+<p>  import java.util.ArrayList;<br>  import java.util.List;</p>
+<p>  @Configuration<br>  public class SgtConfig {</p>
+<pre><code>@Bean
+public CompactDisc sgtPeppers() {
+    List&lt;String&gt; tracks = new ArrayList&lt;&gt;();
+    tracks.add(&quot;s1&quot;);
+    tracks.add(&quot;s2&quot;);
+    tracks.add(&quot;s3&quot;);
+
+    return new SgtPeppers(&quot;title&quot;, &quot;artist&quot;, tracks);
+}
+</code></pre><p>  }  </p>
+</li>
+</ul>
+<p>&emsp;  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import(SgtConfig.class)
+public class CDPlayerConfig {
+
+    @Bean
+    public CDPlayer cdPlayer(CompactDisc compactDisc) {
+        return new CDPlayer(compactDisc);
+    }
+}
+</code></pre><ul>
+<li>在JavaConfig中引用XML配置  </li>
+</ul>
+<p>SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig中引用xml的装配。  </p>
+<pre><code>&lt;bean id=&quot;compactDisc&quot; class=&quot;soundsystem.SgtPeppers&quot; c:title=&quot;title&quot; c:artist=&quot;artist&quot;&gt;
+    &lt;constructor-arg&gt;
+        &lt;list&gt;
+            &lt;value&gt;s1&lt;/value&gt;
+            &lt;value&gt;s2&lt;/value&gt;
+            &lt;value&gt;s3&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/constructor-arg&gt;
+&lt;/bean&gt;
+</code></pre><p>&emsp;  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
+
+@Configuration
+@ImportResource(&quot;/soundsystem/bean.xml&quot;)
+public class CDPlayerConfig {
+
+    @Bean
+    public CDPlayer cdPlayer(CompactDisc compactDisc) {
+        return new CDPlayer(compactDisc);
+    }
+}  
+</code></pre><ul>
+<li>在XML配置中引用JavaConfig  </li>
+</ul>
+<p>SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引用SgtConfig的装配。  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Configuration
+public class SgtConfig {
+    @Bean
+    public CompactDisc sgtPeppers() {
+        List&lt;String&gt; tracks = new ArrayList&lt;&gt;();
+        tracks.add(&quot;s1&quot;);
+        tracks.add(&quot;s2&quot;);
+        tracks.add(&quot;s3&quot;);
+
+        return new SgtPeppers(&quot;title&quot;, &quot;artist&quot;, tracks);
+    }
+}  
+</code></pre><p>&emsp;  </p>
+<pre><code>&lt;bean class=&quot;soundsystem.SgtConfig&quot;&gt;&lt;/bean&gt;
+
+&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_0-ref=&quot;sgtPeppers&quot;&gt;&lt;/bean&gt;  
+</code></pre><ul>
+<li>在XML配置中引用XML  </li>
+</ul>
+<p>sgt-bean.xml  </p>
+<pre><code>&lt;bean id=&quot;sgtPeppers&quot; class=&quot;soundsystem.SgtPeppers&quot; c:title=&quot;title&quot; c:artist=&quot;artist&quot;&gt;
+    &lt;constructor-arg&gt;
+        &lt;list&gt;
+            &lt;value&gt;s1&lt;/value&gt;
+            &lt;value&gt;s2&lt;/value&gt;
+            &lt;value&gt;s3&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/constructor-arg&gt;
+&lt;/bean&gt;  
+</code></pre><p>cdPlayer-bean.xml  </p>
+<pre><code>&lt;import resource=&quot;sgt-bean.xml&quot;&gt;&lt;/import&gt;
+
+&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_0-ref=&quot;sgtPeppers&quot;&gt;&lt;/bean&gt;  
+</code></pre>
       
     </div>
     
