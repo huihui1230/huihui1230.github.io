@@ -7,7 +7,7 @@ categories:
 - Spring
 copyright: true  
 ---
-## 自动化装配bean（@Component、@ComponentScan和@Autowired) ## 
+## 自动化装配bean（@Component、@ComponentScan和@Autowired) 
     
 	```java
 	package soundsystem;  
@@ -19,7 +19,7 @@ copyright: true
   
 <!--more-->   
 
-&emsp;
+&emsp;&emsp;
  	
 	```java
 	package soundsystem;  
@@ -39,7 +39,7 @@ copyright: true
 	}  
 	```
  
-@Component表明类CompactDisc是一个组件类，默认ID为sgtPeppers。也可以指定bean的ID，`@Component("LonelyHeartsClub")`将ID指定为lonelyHeartsClub。@Named也可以来设置bean的ID，`@Named("lonelyHeartsClub")`，两者差别不大。
+`@Component`表明类`CompactDisc`是一个组件类，默认ID为`sgtPeppers`。也可以指定bean的ID，`@Component("LonelyHeartsClub")`将ID指定为`lonelyHeartsClub`。`@Named`也可以来设置bean的ID，`@Named("lonelyHeartsClub")`，两者差别不大。
     
 	```java
 	package soundsystem;  
@@ -55,7 +55,7 @@ copyright: true
 	```
  
   
-@ComponentScan启用组件扫描，默认扫描与配置类相同的包。可以通过设置@ComponentScan的value值来设置组件扫描的包，`@ComponentScan("soundsystem")`。可以设置多个包，`ComponentScan(basePackages={"soundsystem", "package1"})`。也可以设置扫描的类，`ComponentScan(basePackageClasses={CDPlayer.class, DVDPlayer.class})`  
+`@ComponentScan`启用组件扫描，默认扫描与配置类相同的包。可以通过设置`@ComponentScan`的value值来设置组件扫描的包，`@ComponentScan("soundsystem")`。可以设置多个包，`ComponentScan(basePackages={"soundsystem", "package1"})`。也可以设置扫描的类，`ComponentScan(basePackageClasses={CDPlayer.class, DVDPlayer.class})`  
   
 测试，引入Spring和Junit的jar包  。
   
@@ -66,7 +66,7 @@ copyright: true
   
 ![](https://i.imgur.com/vArScZC.png)
   
-	```java
+	```java  
 	package soundsystem;
 	
 	import org.junit.Test;
@@ -92,7 +92,7 @@ copyright: true
 	}     
 	```
   
-@Autowired可以将扫描到的bean装配到注解的地方，可以在类中的属性上注解，也可以在方法上注解。@Autowired的required属性默认为true，当没有bean时，会报错。将required属性设置为false，`@Autowired(required=false)`，当没有匹配的bean，这个bean就会处于未装配状态，不会报错。@Inject和@Autowired作用类似。  
+`@Autowired`可以将扫描到的bean装配到注解的地方，可以在类中的属性上注解，也可以在方法上注解。`@Autowired`的required属性默认为true，当没有bean时，会报错。将required属性设置为false，`@Autowired(required=false)`，当没有匹配的bean，这个bean就会处于未装配状态，不会报错。`@Inject`和`@Autowired`作用类似。  
 	    
 	```java
 	private CompactDisc compactDisc;  
@@ -106,27 +106,27 @@ copyright: true
  
 ## 通过Java代码装配bean(JavaConfig)  
   
-要装配的类：
-  
-	```java
+要装配的类：  
+    
+	```java  
 	package soundsystem;
 	
 	public class SgtPeppers {
 	
-	    private String title = "title";
-	    private String artist = "artist";
-	
-	
-	    @Override
-	    public void play() {
-	        System.out.println("Playing " + title + " by " + artist);
-	    }
-	}   
+		private String title = "title";
+		private String artist = "artist";
+		
+		
+		@Override
+		public void play() {
+		    System.out.println("Playing " + title + " by " + artist);
+		}
+	}
 	```
-  
-&emsp; 
+
+&emsp;&emsp;
     
-	```java
+	```java  
 	package soundsystem;
 	
 	public class CDPlayer {
@@ -140,12 +140,12 @@ copyright: true
 	    public void play() {
 	        compactDisc.play();
 	    }
-	}
-	```  
-     
-配置类：    
+	} 
+	```
 
- 	```java   
+配置类：     
+
+	```java  
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -163,7 +163,7 @@ copyright: true
 	        return new CDPlayer(sgtPeppers());
 	    }
 	}  
-  	```
+	```
   
 测试类：  
   
@@ -188,11 +188,11 @@ copyright: true
 	        cdPlayer.play();
 	    }
 	}  
-  	```
+	```
   
 @Bean装配bean，配置类中，也可以用如下方式进行装配。在装配CDPlayer过程中，可以由sgtPeppers()或CompactDisc compactDisc找到装配的CompactDisc的bean，并注入到cdPlayer()方法中。
 
-## 通过XML装配bean ##  
+## 通过XML装配bean  
   
 ![](https://i.imgur.com/kqJi0Ra.png)  
   
@@ -216,13 +216,9 @@ xml配置：
 		    <constructor-arg ref="compactDisc"></constructor-arg>
 		</bean>
 	</beans>  
-	```  
-  
-&emsp;
+	```
   
 `<constructor-arg>`元素向CDPlayer中注入`CompactDisc`的bean，也可以使用c-命名空间。  
-  
-&emsp;
   
 	```xml 
 	<?xml version="1.0" encoding="UTF-8"?>
@@ -245,12 +241,10 @@ xml配置：
 	
 	    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="compactDisc"></bean>
 	</beans>  
-	```  
-  
-&emsp;
-     
+	```
+
 开始测试，在测试类中引用xml文件。使用ClassPathXmlApplicationContext和FileSystemXmlApplicationContext无法载入spring容器，原因未知。  
-    
+
 	```java
 	package soundsystem;
 	
@@ -274,7 +268,7 @@ xml配置：
 	```
   
 当类SgtPeppers的两个属性需要传入值时，即：  
-    
+  
 	```java
 	package soundsystem;
 
@@ -294,9 +288,9 @@ xml配置：
 	    }
 	}  
 	```
-  
+ 
 配置文件中装配SgtPeppers时需要传入参数的值：  
-    
+  
 	```xml
     <bean id="compactDisc" class="soundsystem.SgtPeppers">
         <constructor-arg value="title" />
@@ -305,19 +299,19 @@ xml配置：
 	```
   
 这里也可以用c-命名空间：  
-    
+   
 	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist"></bean>    
 	```
   
 或：  
-    
+  
 	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:_0="title" c:_1="artist"></bean>  
 	```
   
 当类SgtPeppers的属性存在集合时，即：  
-    
+  
 	```java
 	package soundsystem;
 	
@@ -344,7 +338,7 @@ xml配置：
 	```
   
 配置文件中需要传入List的值：  
-    
+  
 	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers">
 	    <constructor-arg value="title"></constructor-arg>
@@ -384,19 +378,19 @@ c-命名空间的弱势就在于此，它无法做到加入集合的值。
 	}   
 	```
   
-&emsp;   
+&emsp;&emsp;   
     
 	```xml  
 	<bean id="cdPlayer" class="soundsystem.CDPlayer">  
 		<property name="compactDisc" ref="compactDisc"></property>
 	</bean>  
-	```   
+	```
   
-&emsp;  
+&emsp;&emsp;  
   
-也可以使用p-命名空间注入compactDisc，xml头部加入`xmlns:p="http://www.springframework.org/schema/p"`。  
+  也可以使用p-命名空间注入compactDisc，xml头部加入`xmlns:p="http://www.springframework.org/schema/p"`。  
   
-&emsp;  
+&emsp;&emsp;  
  
     
 	```xml
@@ -404,13 +398,13 @@ c-命名空间的弱势就在于此，它无法做到加入集合的值。
 	```
 
 p-命名空间也可以注入普通属性：
-    
+  
 	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers" p:title="title" p:artist="artist"></bean>    
 	```
   
 但不能注入集合，可以通过`<util:list>`元素注入集合的值，头部需要引入util。  
-    
+  
 	```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 	<beans xmlns="http://www.springframework.org/schema/beans"
@@ -431,8 +425,8 @@ p-命名空间也可以注入普通属性：
 	</beans>  
 	```
   
-## 导入和混合配置 ##  
-    
+## 导入和混合配置  
+  
 * 在JavaConfig中引用JavaConfig配置  
   
 	```java
@@ -456,10 +450,10 @@ p-命名空间也可以注入普通属性：
 	        return new SgtPeppers("title", "artist", tracks);
 	    }
 	}    
-	```    
+	```
   
-&emsp;
-   
+&emsp;&emsp;
+ 
 	```java 
 	package soundsystem;
 	
@@ -481,21 +475,21 @@ p-命名空间也可以注入普通属性：
 * 在JavaConfig中引用XML配置  
     
 SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig中引用xml的装配。  
-    
+  
 	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
-        <constructor-arg>
-            <list>
-                <value>s1</value>
-                <value>s2</value>
-                <value>s3</value>
-            </list>
-        </constructor-arg>
-    </bean>  
-	```   
+		<constructor-arg>
+			<list>
+				<value>s1</value>
+				<value>s2</value>
+				<value>s3</value>
+			</list>
+		</constructor-arg>
+	</bean>  
+	```
   
-    &emsp; 
-    
+&emsp;&emsp; 
+  
 	```java
 	package soundsystem;
 	
@@ -512,12 +506,12 @@ SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig�
 	        return new CDPlayer(compactDisc);
 	    }
 	}   
-	``` 
+	```
   
 * 在XML配置中引用JavaConfig  
   
 SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引用SgtConfig的装配。  
-    
+  
 	```java
 	package soundsystem;
 	
@@ -541,28 +535,28 @@ SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引�
 	}    
 	```
   
-&emsp;  
-   
+&emsp;&emsp; 
+  
 	```xml 
 	<bean class="soundsystem.SgtConfig"></bean>
 
-    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>    
+	<bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>    
 	```
   
 * 在XML配置中引用XML  
   
 sgt-bean.xml  
-    
+  
 	```xml
 	<bean id="sgtPeppers" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
-        <constructor-arg>
-            <list>
-                <value>s1</value>
-                <value>s2</value>
-                <value>s3</value>
-            </list>
-        </constructor-arg>
-    </bean>   
+		<constructor-arg>
+			<list>
+				<value>s1</value>
+				<value>s2</value>
+				<value>s3</value>
+			</list>
+		</constructor-arg>
+	</bean>   
 	```
   
 cdPlayer-bean.xml  
