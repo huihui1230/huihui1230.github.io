@@ -9,16 +9,19 @@ copyright: true
 ---
 ## 自动化装配bean（@Component、@ComponentScan和@Autowired) ## 
     
+	```java
 	package soundsystem;  
 	
 	public interface CompactDisc {  
 	    void play();  
 	}  
+	```
   
 <!--more-->   
 
 &emsp;
- 
+ 	
+	```java
 	package soundsystem;  
 	  
 	import org.springframework.stereotype.Component;  
@@ -34,9 +37,11 @@ copyright: true
 	        System.out.println("Playing " + title + " by " + artist);  
 	    }  
 	}  
+	```
  
 @Component表明类CompactDisc是一个组件类，默认ID为sgtPeppers。也可以指定bean的ID，`@Component("LonelyHeartsClub")`将ID指定为lonelyHeartsClub。@Named也可以来设置bean的ID，`@Named("lonelyHeartsClub")`，两者差别不大。
     
+	```java
 	package soundsystem;  
 	
 	import org.springframework.context.annotation.ComponentScan;  
@@ -47,6 +52,7 @@ copyright: true
 	public class CDPlayerConfig {  
 	  
 	}  
+	```
  
   
 @ComponentScan启用组件扫描，默认扫描与配置类相同的包。可以通过设置@ComponentScan的value值来设置组件扫描的包，`@ComponentScan("soundsystem")`。可以设置多个包，`ComponentScan(basePackages={"soundsystem", "package1"})`。也可以设置扫描的类，`ComponentScan(basePackageClasses={CDPlayer.class, DVDPlayer.class})`  
@@ -60,6 +66,7 @@ copyright: true
   
 ![](https://i.imgur.com/vArScZC.png)
   
+	```java
 	package soundsystem;
 	
 	import org.junit.Test;
@@ -83,21 +90,25 @@ copyright: true
 	        compactDisc.play();
 	    }
 	}     
+	```
   
 @Autowired可以将扫描到的bean装配到注解的地方，可以在类中的属性上注解，也可以在方法上注解。@Autowired的required属性默认为true，当没有bean时，会报错。将required属性设置为false，`@Autowired(required=false)`，当没有匹配的bean，这个bean就会处于未装配状态，不会报错。@Inject和@Autowired作用类似。  
 	    
+	```java
 	private CompactDisc compactDisc;  
 	  
 	@Autowired
 	public void setCompactDisc(CompactDisc compactDisc) {
 	    this.compactDisc = compactDisc;
 	}  
+	```
   
  
 ## 通过Java代码装配bean(JavaConfig)  
   
 要装配的类：
   
+	```java
 	package soundsystem;
 	
 	public class SgtPeppers {
@@ -111,9 +122,11 @@ copyright: true
 	        System.out.println("Playing " + title + " by " + artist);
 	    }
 	}   
+	```
   
 &emsp; 
     
+	```java
 	package soundsystem;
 	
 	public class CDPlayer {
@@ -128,10 +141,11 @@ copyright: true
 	        compactDisc.play();
 	    }
 	}
-   
-配置类：
-  
- 
+	```  
+     
+配置类：    
+
+ 	```java   
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -149,10 +163,11 @@ copyright: true
 	        return new CDPlayer(sgtPeppers());
 	    }
 	}  
-  
+  	```
   
 测试类：  
   
+	```java
 	package soundsystem;
 	
 	import org.junit.Test;
@@ -173,7 +188,7 @@ copyright: true
 	        cdPlayer.play();
 	    }
 	}  
-  
+  	```
   
 @Bean装配bean，配置类中，也可以用如下方式进行装配。在装配CDPlayer过程中，可以由sgtPeppers()或CompactDisc compactDisc找到装配的CompactDisc的bean，并注入到cdPlayer()方法中。
 
@@ -183,30 +198,33 @@ copyright: true
   
 xml配置：  
   
+	```xml
 	<?xml version="1.0" encoding="UTF-8"?>
-	<beans xmlns="http://www.springframework.org/schema/beans"
-	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	       xmlns:aop="http://www.springframework.org/schema/aop"
-	       xmlns:tx="http://www.springframework.org/schema/tx"
-	       xmlns:jee="http://www.springframework.org/schema/jee"
-	       xmlns:context="http://www.springframework.org/schema/context"
-	       xsi:schemaLocation="
-	     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-	     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-	     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
-	     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-	     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-	     ">
-	
-	    <bean id="compactDisc" class="soundsystem.SgtPeppers"></bean>
-	
-	    <bean id="cdPlayer" class="soundsystem.CDPlayer">
-	        <constructor-arg ref="compactDisc"></constructor-arg>
-	    </bean>
-	</beans>
+	<beans xmlns="http://www.springframework.org/schema/beans"   
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+		xmlns:aop="http://www.springframework.org/schema/aop"  
+		xmlns:tx="http://www.springframework.org/schema/tx"   
+		xmlns:jee="http://www.springframework.org/schema/jee"  
+		xmlns:context="http://www.springframework.org/schema/context"  
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd  
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd  
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd  
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		<bean id="compactDisc"  class="soundsystem.SgtPeppers"></bean>
+		<bean id="cdPlayer" class="soundsystem.CDPlayer">
+		    <constructor-arg ref="compactDisc"></constructor-arg>
+		</bean>
+	</beans>  
+	```  
   
-<constructor-arg>元素向CDPlayer中注入CompactDisc的bean，也可以使用c-命名空间。  
+&emsp;
   
+`<constructor-arg>`元素向CDPlayer中注入`CompactDisc`的bean，也可以使用c-命名空间。  
+  
+&emsp;
+  
+	```xml 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<beans xmlns="http://www.springframework.org/schema/beans"
 	       xmlns:c="http://www.springframework.org/schema/c"
@@ -226,10 +244,14 @@ xml配置：
 	    <bean id="compactDisc" class="soundsystem.SgtPeppers"></bean>
 	
 	    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="compactDisc"></bean>
-	</beans>
-   
-开始测试，在测试类中引用xml文件。使用ClassPathXmlApplicationContext和FileSystemXmlApplicationContext无法载入spring容器，原因未知。  
+	</beans>  
+	```  
   
+&emsp;
+     
+开始测试，在测试类中引用xml文件。使用ClassPathXmlApplicationContext和FileSystemXmlApplicationContext无法载入spring容器，原因未知。  
+    
+	```java
 	package soundsystem;
 	
 	import org.junit.Test;
@@ -248,10 +270,12 @@ xml配置：
 	    public void cdShouldNotBeNull() {
 	        cdPlayer.play();
 	    }
-	}
+	}  
+	```
   
 当类SgtPeppers的两个属性需要传入值时，即：  
-  
+    
+	```java
 	package soundsystem;
 
 	public class SgtPeppers implements CompactDisc {
@@ -268,25 +292,33 @@ xml配置：
 	    public void play() {
 	        System.out.println("Playing " + title + " by " + artist);
 	    }
-	}
+	}  
+	```
   
 配置文件中装配SgtPeppers时需要传入参数的值：  
-  
+    
+	```xml
     <bean id="compactDisc" class="soundsystem.SgtPeppers">
         <constructor-arg value="title" />
         <constructor-arg value="artist" />
-    </bean>  
+    </bean>    
+	```
   
 这里也可以用c-命名空间：  
-  
-	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist"></bean>  
+    
+	```xml
+	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist"></bean>    
+	```
   
 或：  
-  
-	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:_0="title" c:_1="artist"></bean>
+    
+	```xml
+	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:_0="title" c:_1="artist"></bean>  
+	```
   
 当类SgtPeppers的属性存在集合时，即：  
-  
+    
+	```java
 	package soundsystem;
 	
 	import java.util.List;
@@ -308,27 +340,31 @@ xml配置：
 	        System.out.println("Playing " + title + " by " + artist);
 	        tracks.stream().forEach(System.out::println);
 	    }
-	}
+	}  
+	```
   
 配置文件中需要传入List的值：  
-  
+    
+	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers">
-        <constructor-arg value="title"></constructor-arg>
-        <constructor-arg value="artist"></constructor-arg>
-        <constructor-arg>
-            <list>
-                <value>s1</value>
-                <value>s2</value>
-                <value>s3</value>
-                <value>s4</value>
-            </list>
-        </constructor-arg>
-    </bean>
+	    <constructor-arg value="title"></constructor-arg>
+	    <constructor-arg value="artist"></constructor-arg>
+	    <constructor-arg>
+	        <list>
+	            <value>s1</value>
+	            <value>s2</value>
+	            <value>s3</value>
+	            <value>s4</value>
+	        </list>
+	    </constructor-arg>  
+	</bean>  
+	```
      
 c-命名空间的弱势就在于此，它无法做到加入集合的值。   
   
 以上的类CDPlayer是通过构造函数注入compactDisc的bean，也可以通过setter方法注入。  
-  
+    
+	```java
 	package soundsystem;
 	
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -345,24 +381,37 @@ c-命名空间的弱势就在于此，它无法做到加入集合的值。
 	    public void play() {
 	        compactDisc.play();
 	    }
-	} 
+	}   
+	```
   
 &emsp;   
+    
+	```xml  
+	<bean id="cdPlayer" class="soundsystem.CDPlayer">  
+		<property name="compactDisc" ref="compactDisc"></property>
+	</bean>  
+	```   
   
-	<bean id="cdPlayer" class="soundsystem.CDPlayer">
-        <property name="compactDisc" ref="compactDisc"></property>
-    </bean>   
+&emsp;  
   
 也可以使用p-命名空间注入compactDisc，xml头部加入`xmlns:p="http://www.springframework.org/schema/p"`。  
   
-	<bean id="cdPlayer" class="soundsystem.CDPlayer" p:compactDisc-ref="compactDisc"></bean>
+&emsp;  
+ 
+    
+	```xml
+	<bean id="cdPlayer" class="soundsystem.CDPlayer" p:compactDisc-ref="compactDisc"></bean>  
+	```
 
 p-命名空间也可以注入普通属性：
-  
-	<bean id="compactDisc" class="soundsystem.SgtPeppers" p:title="title" p:artist="artist"></bean>  
+    
+	```xml
+	<bean id="compactDisc" class="soundsystem.SgtPeppers" p:title="title" p:artist="artist"></bean>    
+	```
   
 但不能注入集合，可以通过`<util:list>`元素注入集合的值，头部需要引入util。  
-  
+    
+	```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 	<beans xmlns="http://www.springframework.org/schema/beans"
 	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -379,12 +428,14 @@ p-命名空间也可以注入普通属性：
 	    </util:list>
 	
 	    <bean id="cdPlayer" class="soundsystem.CDPlayer" p:compactDisc-ref="compactDisc"></bean>
-	</beans>
+	</beans>  
+	```
   
 ## 导入和混合配置 ##  
     
 * 在JavaConfig中引用JavaConfig配置  
   
+	```java
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -404,10 +455,12 @@ p-命名空间也可以注入普通属性：
 	
 	        return new SgtPeppers("title", "artist", tracks);
 	    }
-	}  
-
-&emsp;  
+	}    
+	```    
   
+&emsp;
+   
+	```java 
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -423,12 +476,13 @@ p-命名空间也可以注入普通属性：
 	        return new CDPlayer(compactDisc);
 	    }
 	}
-
+	```
 
 * 在JavaConfig中引用XML配置  
     
 SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig中引用xml的装配。  
-  
+    
+	```xml
 	<bean id="compactDisc" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
         <constructor-arg>
             <list>
@@ -437,10 +491,12 @@ SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig�
                 <value>s3</value>
             </list>
         </constructor-arg>
-    </bean>
+    </bean>  
+	```   
   
-&emsp;  
-  
+    &emsp; 
+    
+	```java
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -455,12 +511,14 @@ SgtPeppers通过xml装配，CDPlayer通过JavaConfig装配，在CDPlayerConfig�
 	    public CDPlayer cdPlayer(CompactDisc compactDisc) {
 	        return new CDPlayer(compactDisc);
 	    }
-	}  
+	}   
+	``` 
   
 * 在XML配置中引用JavaConfig  
   
 SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引用SgtConfig的装配。  
-  
+    
+	```java
 	package soundsystem;
 	
 	import org.springframework.context.annotation.Bean;
@@ -480,18 +538,22 @@ SgtPeppers通过JavaConfig装配，CDPlayer通过xml装配，在bean.xml中引�
 	
 	        return new SgtPeppers("title", "artist", tracks);
 	    }
-	}  
+	}    
+	```
   
 &emsp;  
-  
+   
+	```xml 
 	<bean class="soundsystem.SgtConfig"></bean>
 
-    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>  
+    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>    
+	```
   
 * 在XML配置中引用XML  
   
 sgt-bean.xml  
-  
+    
+	```xml
 	<bean id="sgtPeppers" class="soundsystem.SgtPeppers" c:title="title" c:artist="artist">
         <constructor-arg>
             <list>
@@ -500,12 +562,14 @@ sgt-bean.xml
                 <value>s3</value>
             </list>
         </constructor-arg>
-    </bean>  
+    </bean>   
+	```
   
 cdPlayer-bean.xml  
   
+	```xml  
 	<import resource="sgt-bean.xml"></import>
-
-    <bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>  
+	<bean id="cdPlayer" class="soundsystem.CDPlayer" c:_0-ref="sgtPeppers"></bean>    
+	```
   
 
