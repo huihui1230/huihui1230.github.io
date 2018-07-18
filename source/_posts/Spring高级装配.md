@@ -11,7 +11,7 @@ copyright: true
   
 `@Profile`注解用于给bean标注，当该profile被激活时，才装配该profile对应的bean。  
   
-##### 在Java中配置profile bean  
+### 在Java中配置profile bean  
   
 People.java  
 
@@ -23,6 +23,8 @@ public interface People {
     void speak();
 }
 ```
+  
+<!--more-->
   
 Man.java  
   
