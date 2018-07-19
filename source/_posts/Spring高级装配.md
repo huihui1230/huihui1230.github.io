@@ -11,6 +11,8 @@ copyright: true
   
 多个相同的bean，但是其实现方式不同，在代码实际运行中，只会选择其中的一种。`@Profile`注解用于给bean标注，当该profile被激活时，才装配该profile对应的bean。`@ActiveProfiles`注解用于标注被激活的profile，可以设置多个。  
   
+<!--more-->
+  
 ### 在Java中配置profile bean  
   
 基础对象的类：  
@@ -25,8 +27,6 @@ public interface People {
     void speak();
 }
 ```
-  
-<!--more-->
   
 Man.java  
   
@@ -264,9 +264,6 @@ Animal.java
 ```java
 package com.myapp;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Animal {
 
     public void play() {
@@ -301,7 +298,7 @@ public class MagicExistsCondition implements Condition {
   
 配置类：  
   
-Animal.java  
+AnimalConfig.java  
   
 ```java
 package com.myapp;
@@ -636,5 +633,302 @@ Spring的作用域包括：
 * 原型：每次注入都会创建一个新的bean实例。  
 * 会话：web应用的每个会话创建一个bean实例。  
 * 请求：web应用的每个请求创建一个bean实例。  
+  
+创建的bean默认是单例模式。  
+  
+基础对象类：  
+  
+Animal.java  
+  
+```java
+package com.myapp;
+
+public class Animal {
+
+    private int i = 0;
+
+    public void play() {
+        i++;
+        System.out.println(i);
+    }
+}
+```
+  
+配置类：  
+  
+AnimalConfig.java  
+  
+```java
+package com.myapp;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AnimalConfig {
+
+    @Bean
+    public Animal createAnimal() {
+        return new Animal();
+    }
+}
+```
+  
+测试类：  
+  
+```java
+package bean;
+
+import com.myapp.Animal;
+import com.myapp.AnimalConfig;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = AnimalConfig.class)
+public class AnimalConfigTest {
+
+    @Autowired
+    private Animal animal1;
+
+    @Autowired
+    private Animal animal2;
+
+    @Test
+    public void test() {
+        animal1.play();
+        animal2.play();
+    }
+}
+```
+  
+输出结果：  
+  
+```
+1
+2
+```
+  
+说明在两次注入Animal时，注入的是同一个bean。  
+  
+原型模式在标注bean的位置标记Scope。  
+  
+配置类：  
+  
+AnimalConfig.java  
+  
+```java
+package com.myapp;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AnimalConfig {
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Animal createAnimal() {
+        return new Animal();
+    }
+}
+```
+  
+测试结果：  
+  
+```
+1
+1
+```
+  
+说明两次注入的Animal是不同的bean。  
+  
+XML中的配置：  
+  
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="animal" class="com.myapp.Animal" scope="prototype"></bean>
+</beans>
+```
+  
+会话和请求作用域使用`WebApplicationContext`中的`SCOPE_SESSION`和`SCOPE_REQUEST`，bean以作用域代理的方式进行注入，代理可以是接口或者类，使用`proxyMode = ScopedProxyMode.INTERFACES`或`proxyMode = ScopedProxyMode.TARGET_CLASS`指定为代理接口或代理类。  
+  
+```java
+@Bean
+@Scope(value = WebApplicationContext.SCOPE_REQUEST,proxyMode = ScopedProxyMode.TARGET_CLASS)
+public Animal createAnimal() {
+    return new Animal();
+}
+```
+  
+在XML配置中，使用`<aop:scoped-proxy>`告诉Spring创建一个作用域代理，默认是类代理，将`proxy-target-class`属性设置为false生成接口代理。  
+  
+## 运行时值注入  
+  
+之前注入`CompactDisc`时，在运行之前就已经在代码中设置了bean的属性的值，这属于硬编码。实际运用中，需要灵活的指定bean的属性的值。  
+  
+```xml
+<bean id="compactDisc" class="soundsystem.SgtPeppers">
+    <constructor-arg value="title"></constructor-arg>
+    <constructor-arg value="artist"></constructor-arg>
+    <constructor-arg>
+        <list>
+            <value>s1</value>
+            <value>s2</value>
+            <value>s3</value>
+            <value>s4</value>
+        </list>
+    </constructor-arg>
+</bean>
+```
+  
+Spring提供了两种运行时值注入的方式：  
+* 属性占位符
+* Spring表达式语言
+  
+### 注入外部的值  
+  
+基础对象类：  
+  
+Animal.java  
+  
+```java
+package com.myapp;
+
+public class Animal {
+
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public void play() {
+        System.out.println(name);
+    }
+}
+```
+  
+值配置：  
+  
+animal.properties  
+  
+```
+name=Peppa
+```
+  
+配置类：  
+  
+AnimalConfig.java  
+  
+```java
+package com.myapp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
+@Configuration
+@PropertySource("classpath:animal.properties")
+public class AnimalConfig {
+
+    @Autowired
+    Environment environment;
+
+    @Bean
+    public Animal createAnimal() {
+        return new Animal(environment.getProperty("name"));
+    }
+}
+```
+  
+测试类：  
+  
+AnimalConfigTest.java  
+  
+```java
+package bean;
+
+import com.myapp.Animal;
+import com.myapp.AnimalConfig;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = AnimalConfig.class)
+public class AnimalConfigTest {
+
+    @Autowired
+    private Animal animal;
+
+    @Test
+    public void test() {
+        animal.play();
+    }
+}
+```
+  
+测试结果:  
+  
+```
+Peppa
+```
+  
+### 深入学习Spring的Environment
+  
+* getProperty()  
+  
+1. String getProperty(String key)
+2. String getProperty(String key, String defaultValue)
+3. T getProperty(String key, Class<T> type)
+4. T getProperty(String key, Class<T> type, T defaultValue)
+  
+第一种直接返回属性对应的值；第二种当没有设置属性的值时，使用传入的默认值，返回第二个参数的值；第三种可以设置返回值的类型，比如“3”可以使String，也可以是Integer；第四种当没有设置属性的值时，返回默认值。  
+  
+* getRequiired()
+  
+属性必须被定义，否则会报IllegalStateException。  
+  
+* containsProperty()
+  
+判断某个属性是否存在，返回Boolean值。  
+  
+* getPropertyAsClass()
+  
+将属性解析为类。  
+  
+* getActiveProfiles()
+  
+返回激活profile名称的数组  
+  
+* getDefaultProfiles()
+  
+返回默认profile名称的数组  
+  
+* acceptsProfiles(String ... profiles)
+  
+如果environment支持给定的profile，则返回true。  
+  
+### 解析属性占位符
+  
+这个地方没搞懂！！！  
+  
+### 使用Spring表达式语言进行装配
+  
+SpELl表达式好像很牛逼的样子。  
   
 
