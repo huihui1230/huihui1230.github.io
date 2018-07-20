@@ -899,7 +899,7 @@ Peppa
   
 第一种直接返回属性对应的值；第二种当没有设置属性的值时，使用传入的默认值，返回第二个参数的值；第三种可以设置返回值的类型，比如“3”可以使String，也可以是Integer；第四种当没有设置属性的值时，返回默认值。  
   
-* getRequiired()
+* getRequiredProperty()
   
 属性必须被定义，否则会报IllegalStateException。  
   
@@ -925,7 +925,109 @@ Peppa
   
 ### 解析属性占位符
   
-这个地方没搞懂！！！  
+基础对象类：  
+  
+Animal.java  
+  
+```java
+package com.myapp;
+
+public class Animal {
+
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public void play() {
+        System.out.println(name);
+    }
+}
+```
+  
+配置文件：  
+  
+bean.xml  
+  
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:animal.properties"></context:property-placeholder>
+
+    <bean id="animal" class="com.myapp.Animal" c:_0="${name}"></bean>
+</beans>
+```
+  
+测试类：  
+  
+```java
+package bean;
+
+import com.myapp.Animal;
+import com.myapp.AnimalConfig;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:bean.xml")
+public class AnimalConfigTest {
+
+    @Autowired
+    private Animal animal;
+
+    @Test
+    public void test() {
+        animal.play();
+    }
+}
+```
+  
+测试结果：  
+  
+```
+Peppa
+```
+  
+尝试使用Java配置：  
+  
+```java
+package com.myapp;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+
+@Configuration
+public class AnimalConfig {
+
+    @Bean
+    public Animal createAnimal(@Value("${name}") String name) {
+        return new Animal(name);
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        ClassPathResource classPathResource = new ClassPathResource("classpath:animal.properties");
+        propertySourcesPlaceholderConfigurer.setLocations(classPathResource);
+
+        return propertySourcesPlaceholderConfigurer;
+    }
+}
+```
+  
+运行报错，无法加载Spring环境，原因未知。
   
 ### 使用Spring表达式语言进行装配
   
