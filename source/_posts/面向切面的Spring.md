@@ -898,4 +898,115 @@ public class TrackCounterTest {
   
 ### 通过切面引入新的功能  
   
+基础对象类：  
+  
+Performance.java  
+  
+```java
+package concert;
 
+public interface Performance {
+    public void perform();
+}
+```
+  
+Leader.java  
+  
+```java
+package concert;
+
+public class Leader implements Performance {
+
+    @Override
+    public void perform() {
+        System.out.println("perform");
+    }
+}
+```
+  
+Encoreable.java  
+  
+```java
+package concert;
+
+public interface Encoreable {
+    void performEncore();
+}
+```
+  
+DefaultEncoreable.java  
+  
+```java
+package concert;
+
+public class DefaultEncoreable implements Encoreable {
+
+    @Override
+    public void performEncore() {
+        System.out.println("encoreable");
+    }
+}
+```
+  
+配置类：  
+  
+aspectj.xml  
+  
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean class="concert.Leader" id="leader"/>
+
+    <aop:config>
+        <aop:aspect>
+            <aop:declare-parents types-matching="concert.Performance+" implement-interface="concert.Encoreable" default-impl="concert.DefaultEncoreable" />
+        </aop:aspect>
+    </aop:config>
+</beans>
+```
+  
+测试类：  
+  
+EncoreableConfigTest.java  
+  
+```java
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import concert.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:aspectj.xml")
+public class EncoreableConfigTest {
+
+    @Autowired
+    private Performance performance;
+
+    @Test
+    public void test() {
+        performance.perform();
+
+        Encoreable encoreable = (Encoreable) performance;
+        encoreable.performEncore();
+    }
+}
+```
+  
+运行结果  
+  
+```
+perform
+encoreable
+```
+  
+## 注入AspectJ切面
+  
+Spring AOP不能满足需求时，需要使用更加强大的AspectJ。
