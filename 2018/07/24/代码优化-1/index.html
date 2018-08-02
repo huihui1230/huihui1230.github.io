@@ -84,7 +84,7 @@
 
 
 
-  <meta name="keywords" content="代码优化,Java," />
+  <meta name="keywords" content="Java,代码优化," />
 
 
 
@@ -96,14 +96,14 @@
 
 
 <meta name="description" content="需求活动对象与其他多个对象是多对多的关系，数据库中有多张中间关联表。复制一个活动，需要复制该活动与多个实体之间的关系。">
-<meta name="keywords" content="代码优化,Java">
+<meta name="keywords" content="Java,代码优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="代码优化(1)">
 <meta property="og:url" content="https://huihui1230.github.io/2018/07/24/代码优化-1/index.html">
 <meta property="og:site_name" content="huihui">
 <meta property="og:description" content="需求活动对象与其他多个对象是多对多的关系，数据库中有多张中间关联表。复制一个活动，需要复制该活动与多个实体之间的关系。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T10:03:27.516Z">
+<meta property="og:updated_time" content="2018-07-25T09:54:16.450Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代码优化(1)">
 <meta name="twitter:description" content="需求活动对象与其他多个对象是多对多的关系，数据库中有多张中间关联表。复制一个活动，需要复制该活动与多个实体之间的关系。">
@@ -385,6 +385,8 @@
         <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>活动对象与其他多个对象是多对多的关系，数据库中有多张中间关联表。复制一个活动，需要复制该活动与多个实体之间的关系。  </p>
 <a id="more"></a>
 <h2 id="初完成"><a href="#初完成" class="headerlink" title="初完成"></a>初完成</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ActivityTemplateDO&gt; templateDOList = activityTemplateService.selectByTemplateActivityId(id);</span><br><span class="line">templateDOList.stream().peek(activityTemplateDO -&gt; activityTemplateDO.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(activityTemplateDO -&gt; activityTemplateDO.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(activityTemplateService::insertSelective);</span><br><span class="line"></span><br><span class="line">List&lt;ChannelDTO&gt; channelDTOList = pinDaoService.selectChannelDTOlistByActivityId(id);</span><br><span class="line">channelDTOList.stream().peek(channelDTO -&gt; channelDTO.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(channelDTO -&gt; channelDTO.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(pinDaoService::insertSelective);</span><br><span class="line"></span><br><span class="line">List&lt;ActivityDevice&gt; activityDeviceList = activityDeviceService.selectDevicelistByActivityId(id);</span><br><span class="line">activityDeviceList.stream().peek(activityDevice -&gt; activityDevice.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(activityDevice -&gt; activityDevice.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(activityDeviceService::insertSelective);</span><br><span class="line"></span><br><span class="line">List&lt;ActivityConnection&gt; activityConnectionList = activityConnectionService.selectConnectionlistByActivityId(id);</span><br><span class="line">activityConnectionList.stream().peek(activityConnection -&gt; activityConnection.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(activityConnection -&gt; activityConnection.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(activityConnectionService::insertSelective);</span><br><span class="line"></span><br><span class="line">List&lt;Age&gt; ageList = ageService.selectAgelistByActivityId(id);</span><br><span class="line">ageList.stream().peek(age -&gt; age.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(age -&gt; age.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(ageService::insertSelective);</span><br><span class="line"></span><br><span class="line">List&lt;Gender&gt; genderList = genderService.selectGenderlistByActivityId(id);</span><br><span class="line">genderList.stream().peek(gender -&gt; gender.setId(<span class="keyword">null</span>))</span><br><span class="line">        .peek(gender -&gt; gender.setActivityId(activityDO.getId()))</span><br><span class="line">        .forEach(genderService::insertSelective);</span><br></pre></td></tr></table></figure>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>使用泛型，几个实体类继承于一个接口，几个service类继承于一个接口。  </p>
+<p>由于service类的接口需要装配到Spring中，并注入进来，最后并不能使代码更简单，还是采用这种看起来很蠢的代码吧。</p>
 
       
     </div>
@@ -413,9 +415,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/代码优化/" rel="tag"><i class="fa fa-tag"></i> 代码优化</a>
-          
             <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/代码优化/" rel="tag"><i class="fa fa-tag"></i> 代码优化</a>
           
         </div>
       
@@ -437,6 +439,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/25/构建Spring-Web应用程序/" rel="prev" title="构建Spring Web应用程序">
+                构建Spring Web应用程序 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -513,7 +519,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -524,7 +530,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -535,7 +541,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -584,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初完成"><span class="nav-number">2.</span> <span class="nav-text">初完成</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初完成"><span class="nav-number">2.</span> <span class="nav-text">初完成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
             
 
           </div>
