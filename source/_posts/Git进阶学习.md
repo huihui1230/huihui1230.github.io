@@ -174,8 +174,30 @@ git log的常用选项：
 | --grep | 仅显示指定关键字的提交 |
 | -S | 仅显示添加或移除了某个关键字的提交 |
   
-### 撤销操作
+### 重新提交
   
 ```
 git commit --amend
 ```
+  
+### 取消暂存文件
+  
+```
+git reset HEAD <file>
+```
+  
+### 撤销文件的修改
+  
+```
+git checkout -- <file>
+```
+  
+### 远程仓库
+  
+```
+$ git remote -v
+blog_origin     git@github.com:huihui1230/huihui1230.github.io.git (fetch)
+blog_origin     git@github.com:huihui1230/huihui1230.github.io.git (push)
+```
+  
+
