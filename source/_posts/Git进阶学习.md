@@ -37,19 +37,19 @@ M lib/simplegit.rb
 查看未暂存文件的修改：  
   
 ```
-git diff
+$ git diff
 ```
   
 查看已暂存文件的修改：  
   
 ```
-git diff --cached
+$ git diff --cached
 ```
   
 或  
   
 ```
-git diff --staged
+$ git diff --staged
 ```
   
 ### 移除文件
@@ -57,25 +57,25 @@ git diff --staged
 删除未暂存的文件：  
   
 ```
-git rm 
+$ git rm 
 ```
   
 删除已暂存的文件：  
   
 ```
-git rm -f
+$ git rm -f
 ```
   
 删除已暂存的文件，文件保存在工作区：  
   
 ```
-git rm --cached
+$ git rm --cached
 ```
   
 ### 移动文件
   
 ```
-git mv file_from file_to
+$ git mv file_from file_to
 ```
   
 ### 查看提交历史
@@ -83,49 +83,49 @@ git mv file_from file_to
 查看提交历史中每次的变化：  
   
 ```
-git log -p
+$ git log -p
 ```
   
 查看近2次的提交历史：  
   
 ```
-git log -2
+$ git log -2
 ```
   
 查看提交历史中近2次的变化：  
   
 ```
-git log -p -2
+$ git log -p -2
 ```
   
 查看提交简略变化：  
   
 ```
-git log --stat
+$ git log --stat
 ```
   
 按照不同格式查看提交历史：  
   
 ```
-git log --pretty=oneline
+$ git log --pretty=oneline
 ```
   
 ```
-git log --pretty=short
+$ git log --pretty=short
 ```
   
 ```
-git log --pretty=full
+$ git log --pretty=full
 ```
   
 ```
-git log --pretty=fuller
+$ git log --pretty=fuller
 ```
   
 按照某种格式查看提交历史：  
   
 ```
-git log --pretty=format:"%h - %an, %ar : %s"
+$ git log --pretty=format:"%h - %an, %ar : %s"
 ```
   
 git log --pretty=format常用选项：  
@@ -179,27 +179,81 @@ git log的常用选项：
 ### 重新提交
   
 ```
-git commit --amend
+$ git commit --amend
 ```
   
 ### 取消暂存文件
   
 ```
-git reset HEAD <file>
+$ git reset HEAD <file>
 ```
   
 ### 撤销文件的修改
   
 ```
-git checkout -- <file>
+$ git checkout -- <file>
 ```
   
 ### 远程仓库
+  
+查看远程仓库名称以及URL：  
   
 ```
 $ git remote -v
 blog_origin     git@github.com:huihui1230/huihui1230.github.io.git (fetch)
 blog_origin     git@github.com:huihui1230/huihui1230.github.io.git (push)
 ```
+  
+从远程仓库抓取，但不合并：  
+  
+```
+$ git fetch [remote-name]
+```
+  
+查看某一个远程仓库的更多信息：  
+  
+```
+$ git remote show [remote-name]
+```
+  
+重命名远程仓库：  
+  
+```
+$ git remote rename [remote-name] [new-remote-name]
+```
+  
+### 打标签
+  
+列出标签：  
+  
+```
+$ git tag
+```
+  
+添加附注标签：  
+  
+```
+$ git tag -a [tag-name] -m ""
+```
+  
+添加轻量标签：  
+  
+```
+$ git tag [tag-name]
+```
+  
+查看标签信息：  
+  
+```
+$ git show [tag-name]
+```
+  
+附注标签与轻量标签的区别是：附注标签在查看标签信息时可以看到标签的提交信息，但是查看轻量标签时看不到标签的提交信息。  
+  
+v1.0为附注标签，v1.1为轻量标签：  
+  
+![](https://i.imgur.com/iPZ11aB.png)
+  
+![](https://i.imgur.com/a7iGs2x.png)
   
 
