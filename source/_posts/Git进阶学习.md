@@ -233,7 +233,7 @@ $ git tag
 添加附注标签：  
   
 ```
-$ git tag -a [tag-name] -m ""
+$ git tag -a [tag-name] -m "[message]"
 ```
   
 添加轻量标签：  
@@ -255,5 +255,25 @@ v1.0为附注标签，v1.1为轻量标签：
 ![](https://i.imgur.com/iPZ11aB.png)
   
 ![](https://i.imgur.com/a7iGs2x.png)
+  
+后期打标签：  
+  
+在提交历史中打标签：  
+  
+```
+$ git tag -a [tag-name] [log] -m "[message]"
+```
+  
+推送单个标签：  
+  
+```
+$ git push origin [tag-name]
+```
+  
+推送多个标签：  
+  
+```
+$ git push origin --tags
+```
   
 
