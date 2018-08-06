@@ -327,4 +327,25 @@ $ git checkout -b [branch-name] [remote-name]/[branch-name]
 $ git checkout --track [remote-name]/[branch-name]
 ```
   
-
+修改分支正在跟踪的上游分支：  
+  
+```
+$ git branch -u [remote-name]/[branch-name]
+```
+  
+查看分支信息，包括跟踪的远程分支：  
+  
+```
+$ git branch -vv
+```
+  
+![](https://i.imgur.com/zWBmSUG.png)
+  
+> 由于git pull的魔法经常令人困惑所以通常单独显示地使用fetch与merge命令会更好一些  
+  
+删除远程分支：  
+  
+```
+$ git push [remote-name] --delete [branch-name]
+```
+  
