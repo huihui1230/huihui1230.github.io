@@ -315,4 +315,16 @@ $ git branch --no-merged
 $ git merge origin/[branch-name]
 ```
   
+基于远程某个分支新建一个分支并切换到新分支：  
+  
+```
+$ git checkout -b [branch-name] [remote-name]/[branch-name]
+```
+  
+或：  
+  
+```
+$ git checkout --track [remote-name]/[branch-name]
+```
+  
 
