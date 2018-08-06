@@ -341,7 +341,7 @@ $ git branch -vv
   
 ![](https://i.imgur.com/zWBmSUG.png)
   
-> 由于git pull的魔法经常令人困惑所以通常单独显示地使用fetch与merge命令会更好一些  
+> 由于git pull的魔法经常令人困惑所以通常单独显示地使用fetch与merge命令会更好一些。  
   
 删除远程分支：  
   
