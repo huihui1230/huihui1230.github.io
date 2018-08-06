@@ -276,4 +276,43 @@ $ git push origin [tag-name]
 $ git push origin --tags
 ```
   
+检出标签：  
+  
+```
+$ git checkout -b [branch-name] [tag-name]
+```
+  
+Git别名：  
+  
+```
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+```
+  
+## Git分支
+  
+查看分支最后一次提交信息：  
+  
+```
+$ git branch -v
+```
+  
+查看合并到当前分支的分支：  
+  
+```
+$ git branch --merged
+```
+  
+查看未合并到当前分支的分支：  
+  
+```
+$ git branch --no-merged
+```
+  
+将远程某个分支合并到当前分支：  
+  
+```
+$ git merge origin/[branch-name]
+```
+  
 
