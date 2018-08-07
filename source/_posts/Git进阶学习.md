@@ -349,3 +349,25 @@ $ git branch -vv
 $ git push [remote-name] --delete [branch-name]
 ```
   
+变基到另一个分支：  
+  
+```
+$ git rebase [branch-name]
+```
+  
+变基分支1到分支2：  
+  
+```
+$ git rebase [branch-name2] [branch-name1]
+```
+  
+取出分支3，找出处于分支2和分支3的共同祖先之后的修改，然后重放在分支1上：  
+  
+```
+$ git rebase --onto [branch-name1] [branch-name2] [branch-name2]
+```
+  
+**变基适用于属于自己的分支，千万不要变基别人也在用的代码。万一变基了大家都在用的代码，不要慌，有解决方案的。**  
+  
+## 服务器上的GIT
+  
