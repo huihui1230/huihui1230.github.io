@@ -282,7 +282,7 @@ $ git push origin --tags
 $ git checkout -b [branch-name] [tag-name]
 ```
   
-Git别名：  
+### Git别名  
   
 ```
 $ git config --global alias.co checkout
@@ -367,7 +367,4 @@ $ git rebase [branch-name2] [branch-name1]
 $ git rebase --onto [branch-name1] [branch-name2] [branch-name2]
 ```
   
-**变基适用于属于自己的分支，千万不要变基别人也在用的代码。万一变基了大家都在用的代码，不要慌，有解决方案的。**  
-  
-## 服务器上的GIT
-  
+**变基适用于属于自己的分支，千万不要变基别人也在用的分支。万一变基了大家都在用的分支，不要慌，有解决方案的。**  
