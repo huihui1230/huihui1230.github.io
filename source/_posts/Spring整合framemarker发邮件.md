@@ -15,6 +15,56 @@ copyright: true
   
 ## 实现
   
+```xml
+<!-- 配置freeMarker视图解析器 -->
+<bean id="viewResolverFtl" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+    <property name="contentType" value="text/html; charset=utf-8"/>
+    <property name="cache" value="false" />
+    <property name="suffix" value=".ftl" />
+    <property name="order" value="0"/>
+    <property name="requestContextAttribute" value="request"/>
+</bean>
+
+<!-- 配置freeMarker的模板路径 -->
+<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="templateLoaderPath" value="/WEB-INF/view/ftl/" />
+    <property name="defaultEncoding" value="UTF-8" />
+    <property name="freemarkerSettings">
+        <props>
+            <prop key="template_update_delay">0</prop>
+        </props>
+    </property>
+</bean>
+
+<!--MailSender-->
+<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="host">
+        <value>smtp.263.net</value>
+    </property>
+    <property name="username">
+        <value>xxx@sss</value>
+    </property>
+    <property name="password">
+        <value>xxx</value>
+    </property>
+    <property name="protocol"><value>smtp</value></property>
+    <property name="defaultEncoding"><value>utf-8</value></property>
+    <property name="javaMailProperties">
+        <props>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.timeout">10000</prop>
+            <prop key="mail.smtp.from">xxx@sss</prop>
+            <prop key="mail.debug">true</prop>
+            <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+            <prop key="mail.smtp.socketFactory.port">465</prop>
+            <prop key="mail.smtp.port">465</prop>
+            <prop key="mail.smtp.host">smtp.263.net</prop>
+        </props>
+    </property>
+</bean>
+```
+  
 Spring线程池配置：  
   
 ```xml
@@ -270,7 +320,7 @@ mail.ftl
 	<div class="box">
 		<div class="top"></div>
 		<div class="content">
-			<div class="word">欢迎使用TapWin广告投放系统,您的账户已经成功开通. </div>
+			<div class="word">欢迎使用系统,您的账户已经成功开通. </div>
 			<div class="center">
 				<div class="user">
 					<span class="username">用户名:</span>
@@ -283,18 +333,26 @@ mail.ftl
 				<div class="add">
 					<span class="address">系统访问地址:</span>
 					<span class="res">
-						<a href="http://admin.tapwin.cn/system/user/login" style="color: blue">
-						http://admin.tapwin.cn/system/user/login</a>
+						<a href="http://xxx" style="color: blue">
+						http://xxx</a>
 					</span>
 				</div>
 			</div>
 		</div>
 		<div class="bottom">
 			<p class="first">如果您在使用系统时遇到任何问题可发邮件至</p>
-			<p class="sec"><span class="reach">support@180.ai</span>获取帮助信息.</p>
+			<p class="sec"><span class="reach">xxx@xxx</span>获取帮助信息.</p>
 			<p class="third">本邮件由系统自动发出,请不要回复此邮件.</p>
 		</div>
 	</div>
 </body>
 </html>
 ```
+  
+## 问题
+  
+在本地和测试服务器上都可以成功发送邮件，只有在线上服务器发送不成功。  
+  
+## 原因
+  
+是由于线上服务器无法解析域名地址，需要在代码中将邮件服务器地址改成IP的地址，将smtp.263.net改为211.150.65.66。
